@@ -3,4 +3,25 @@
   <PropertyGroup>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.72" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.7" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Harbor.Core\Harbor.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Scripts de migration embarqués comme ressources dans l'assembly. -->
+    <EmbeddedResource Include="Migrations\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Permet aux tests d'intégration d'accéder aux helpers internes
+         (notamment HarborDbContext.DeriveTestKey). -->
+    <InternalsVisibleTo Include="Harbor.Data.Tests" />
+  </ItemGroup>
+
 </Project>
