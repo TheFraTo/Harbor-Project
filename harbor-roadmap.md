@@ -38,6 +38,7 @@ Objectif : disposer d'un squelette de projet compilable et d'une CI fonctionnell
 - [x] 0.8 — Créer `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`
 - [x] 0.9 — Créer le workflow GitHub Actions `build.yml` (matrix Windows/macOS/Linux : restore + build + test)
 - [x] 0.10 — Vérifier que la solution compile à vide sans erreur ni warning
+- [x] 0.11 — (bonus) Créer `.gitattributes` pour normaliser les line endings (LF par défaut, CRLF pour .sln/.bat/.ps1)
 
 ---
 
@@ -46,7 +47,7 @@ Objectif : disposer d'un squelette de projet compilable et d'une CI fonctionnell
 Objectif : disposer du domaine, des interfaces, de la persistance et du keystore chiffré.
 
 ### 1.1 Harbor.Core — Domaine
-- [ ] 1.1.1 — Créer les enums (`ProtocolKind`, `KeyAlgorithm`, `TransferDirection`, `TransferStatus`, `AuditEventType`, `RemoteFileSystemCapabilities`)
+- [x] 1.1.1 — Créer les enums (`ProtocolKind`, `KeyAlgorithm`, `TransferDirection`, `TransferStatus`, `AuditEventType`, `RemoteFileSystemCapabilities`)
 - [ ] 1.1.2 — Créer les records de modèles (`Workspace`, `Profile`, `ConnectionDetails` + variantes, `AuthenticationMethod` + variantes, `SshKey`, `Transfer`, `AuditLogEntry`, `RemoteFile`, `Snippet`)
 - [ ] 1.1.3 — Créer les types utilitaires (`EncryptedString`, `EncryptedBytes`, `TerminalSize`, `JumpHost`)
 - [ ] 1.1.4 — Créer les interfaces d'abstraction (`IRemoteFileSystem`, `IRemoteShell`, `ICloudStorage`, `ITransferEngine`, `IInteractiveSession`, `IPortForward`)
