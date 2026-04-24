@@ -50,8 +50,8 @@ Objectif : disposer du domaine, des interfaces, de la persistance et du keystore
 - [x] 1.1.1 — Créer les enums (`ProtocolKind`, `KeyAlgorithm`, `TransferDirection`, `TransferStatus`, `AuditEventType`, `RemoteFileSystemCapabilities`)
 - [x] 1.1.2 — Créer les records de modèles (`Workspace`, `Profile`, `ConnectionDetails` + variantes, `AuthenticationMethod` + variantes, `SshKey`, `Transfer`, `AuditLogEntry`, `RemoteFile`, `Snippet`)
 - [x] 1.1.3 — Créer les types utilitaires (`EncryptedString`, `EncryptedBytes`, `TerminalSize`, `JumpHost`)
-- [ ] 1.1.4 — Créer les interfaces d'abstraction (`IRemoteFileSystem`, `IRemoteShell`, `ICloudStorage`, `ITransferEngine`, `IInteractiveSession`, `IPortForward`)
-- [ ] 1.1.5 — Créer les EventArgs (`ConnectionStateChangedEventArgs`, etc.)
+- [x] 1.1.4 — Créer les interfaces d'abstraction (`IRemoteFileSystem`, `IRemoteShell`, `ICloudStorage`, `ITransferEngine`, `IInteractiveSession`, `IPortForward`)
+- [x] 1.1.5 — Créer les EventArgs (`ConnectionStateChangedEventArgs`, etc.)
 - [ ] 1.1.6 — Tests unitaires sur les records / validations
 
 ### 1.2 Harbor.Data — Persistance SQLite
