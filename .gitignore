@@ -1,0 +1,108 @@
+# === .NET / Build artifacts ===
+bin/
+obj/
+out/
+publish/
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# === Visual Studio ===
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.VisualState.xml
+
+# === Rider / JetBrains ===
+.idea/
+*.DotSettings.user
+
+# === VS Code (keep shared configs if added later) ===
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# === Rider ReSharper ===
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# === NuGet ===
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+*.nuget.props
+*.nuget.targets
+.nuget/
+
+# === Test results ===
+TestResults/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]uild/
+bld/
+[Ll]og/
+[Ll]ogs/
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+
+# === Avalonia / XAML ===
+*.xaml.bak
+*.axaml.bak
+
+# === User secrets & local config ===
+secrets.json
+*.key
+*.pfx
+*.snk
+appsettings.*.local.json
+.env
+.env.local
+
+# === OS ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+ehthumbs.db
+
+# === Harbor local data (ne doit jamais être committé) ===
+harbor.db
+harbor.db-journal
+harbor.db-wal
+harbor.db-shm
+/backups/
+local/
+
+# === Installers / Packaging output ===
+*.msi
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+*.zip
+!docs/**/*.zip
+
+# === Temp / misc ===
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# === Outils locaux (non committés) ===
+.claude/
