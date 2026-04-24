@@ -31,13 +31,13 @@ Objectif : disposer d'un squelette de projet compilable et d'une CI fonctionnell
 - [x] 0.1 — Initialiser le dépôt Git local (`git init`, `.gitignore` .NET/Avalonia/IDE, `README.md` minimal)
 - [x] 0.2 — Créer la solution : `Harbor.sln` (format classique, décidé — voir Notes)
 - [x] 0.3 — Créer l'arborescence de projets vides conforme à `harbor-architecture.md` §7 (`Harbor.App`, `Harbor.UI`, `Harbor.Core`, `Harbor.Services`, `Harbor.Security`, `Harbor.Protocols.Ssh`, `Harbor.Protocols.Ftp`, `Harbor.Protocols.S3`, `Harbor.Protocols.Azure`, `Harbor.Protocols.Gcs`, `Harbor.Protocols.WebDav`, `Harbor.Protocols.Docker`, `Harbor.Protocols.Kubernetes`, `Harbor.Terminal`, `Harbor.Plugins`, `Harbor.Data`, `Harbor.Cli`, `Harbor.Ipc`)
-- [ ] 0.4 — Créer les projets de tests correspondants (`tests/Harbor.Core.Tests`, `tests/Harbor.Services.Tests`, `tests/Harbor.Protocols.Ssh.Tests`, `tests/Harbor.Security.Tests`, `tests/Harbor.E2E.Tests`)
-- [ ] 0.5 — Configurer `Directory.Build.props` (target `net8.0`, nullable enable, warnings as errors, ImplicitUsings)
-- [ ] 0.6 — Configurer `.editorconfig` strict
-- [ ] 0.7 — Ajouter les analyzers (Microsoft.CodeAnalysis.NetAnalyzers, Roslynator)
-- [ ] 0.8 — Créer `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`
-- [ ] 0.9 — Créer le workflow GitHub Actions `build.yml` (matrix Windows/macOS/Linux : restore + build + test)
-- [ ] 0.10 — Vérifier que la solution compile à vide sans erreur ni warning
+- [x] 0.4 — Créer les projets de tests correspondants (`tests/Harbor.Core.Tests`, `tests/Harbor.Services.Tests`, `tests/Harbor.Protocols.Ssh.Tests`, `tests/Harbor.Security.Tests`, `tests/Harbor.E2E.Tests`)
+- [x] 0.5 — Configurer `Directory.Build.props` (target `net10.0`, nullable enable, warnings as errors, ImplicitUsings)
+- [x] 0.6 — Configurer `.editorconfig` strict
+- [x] 0.7 — Ajouter les analyzers (Microsoft.CodeAnalysis.NetAnalyzers, Roslynator)
+- [x] 0.8 — Créer `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`
+- [x] 0.9 — Créer le workflow GitHub Actions `build.yml` (matrix Windows/macOS/Linux : restore + build + test)
+- [x] 0.10 — Vérifier que la solution compile à vide sans erreur ni warning
 
 ---
 
@@ -300,6 +300,45 @@ Objectif : premier binaire distribuable.
 - Fichier `~/.ssh/config` créé avec une entrée `Host github.com` qui force l'utilisation de cette clé (`IdentitiesOnly yes`) pour tous les `git@github.com:...`. N'interfère pas avec d'éventuelles autres clés SSH de l'utilisateur.
 - Fingerprint : `SHA256:WxSjKoaFBJuVRSYYbJI/B+oKoCfQXks0lCubqHzEc90`.
 - Repo distant cible : `git@github.com:TheFraTo/Harbor-Project.git`.
+
+**2026-04-24 — Problème NTFS ACL sur `~/.ssh/known_hosts`**
+- Le fichier `known_hosts` préexistant (créé 2024-12-03 par une autre application) avait des ACL NTFS qui empêchaient Git/OpenSSH de le lire (exécution : `cat known_hosts` → "Permission denied" malgré `0644` apparent en POSIX).
+- Contournement : ajout de `UserKnownHostsFile ~/.ssh/known_hosts_harbor` dans `~/.ssh/config` pour le Host github.com, fichier pré-rempli via `ssh-keyscan -t rsa,ecdsa,ed25519 github.com`.
+- Le fichier legacy n'est pas supprimé ; le projet utilise son propre known_hosts dédié.
+
+**2026-04-24 — Divergence Avalonia : 12.0.1 vs 11.x du doc**
+- Le template `avalonia.app` avec le SDK .NET 10 installe **Avalonia 12.0.1** (pas 11.x comme écrit dans `harbor-architecture.md` §5.3 et §24.1).
+- Avalonia 12 est une version majeure plus récente, disponible début 2026. Décision implicite par adhérence au template (pas de raison de downgrade).
+- *Action doc :* mettre à jour `harbor-architecture.md` §5.3 et §24.1 (Avalonia 11.x → 12.x) lors du polissage des docs.
+- Packages installés par le template : `Avalonia`, `Avalonia.Desktop`, `Avalonia.Themes.Fluent`, `Avalonia.Fonts.Inter`, `AvaloniaUI.DiagnosticsSupport` — tous en 12.0.1 / 2.2.1.
+
+**2026-04-24 — Phase 0 terminée : Roslynator, fichiers communautaires, CI**
+- `Roslynator.Analyzers` + `Roslynator.Formatting.Analyzers` 4.12.10 ajoutés dans `Directory.Build.props` (scope `all` projects, `PrivateAssets=all`).
+- Suppression des 16 `src/**/Class1.cs` scaffold (bruit inutile). Les `UnitTest1.cs` des 5 projets de test sont conservés pour maintenir la baseline "5 tests passants".
+- `LICENSE` (MIT 2026), `CONTRIBUTING.md` (règles .NET strictes, Conventional Commits), `CODE_OF_CONDUCT.md` (Contributor Covenant v2.1 en français), `SECURITY.md` (GitHub private vulnerability reporting).
+- Workflow CI `.github/workflows/build.yml` : matrix Windows/macOS/Linux, .NET 10, `dotnet format --verify` (Linux uniquement), `restore` + `build Release` + `test Release`, upload des résultats TRX. Concurrency group pour annuler les builds superposés.
+- Build Release final : 0 warning, 0 erreur, 5/5 tests passent (Debug + Release).
+
+**2026-04-24 — `.editorconfig` strict + GenerateDocumentationFile**
+- `.editorconfig` complet créé : UTF-8 LF, indent 4 (2 pour XML/JSON/YAML), file-scoped namespaces obligatoires, naming conventions C# complètes (interfaces `I*`, type params `T*`, private fields `_camelCase`), severity overrides (CA1014 off, CA1062 suggestion, IDE0005 error).
+- `dotnet format` a auto-corrigé le scaffold : BOM → UTF-8 sans BOM, CRLF → LF sur les UnitTest1.cs, ordre des usings, retrait des `using System;` inutiles avec ImplicitUsings.
+- **Piège Roslyn :** `IDE0005` (using inutile) en `error` nécessite `GenerateDocumentationFile=true` au build-time (cf. dotnet/roslyn#41640). Ajouté dans `Directory.Build.props`. Les `.xml` générés tombent dans `bin/` (gitignoré). `CS1591` (missing XML doc) reste à `none` donc pas de bruit.
+
+**2026-04-24 — `Directory.Build.props` activé en mode strict**
+- Centralisation : `TargetFramework=net10.0`, `LangVersion=latest`, `Nullable=enable`, `ImplicitUsings=enable`.
+- Rigueur : `TreatWarningsAsErrors=true`, `EnforceCodeStyleInBuild=true`, `AnalysisLevel=latest-recommended`.
+- Métadonnées : Company/Product/Authors/Copyright/NeutralLanguage=en-US.
+- Déterminisme : `Deterministic=true`, `ContinuousIntegrationBuild` auto quand `$(CI)=true`.
+- Cleanup : les 23 `.csproj` ont été dépouillés de `TargetFramework`, `ImplicitUsings`, `Nullable` (via `sed` sur toute l'arbo).
+- *Première erreur strict attrapée :* `CA1852` sur `Harbor.App/Program.cs` (Program doit être `sealed`). Fix appliqué. Montre bien la valeur du mode strict dès le départ.
+- Build + tests : 0 warning, 0 erreur, 5/5 tests passent.
+
+**2026-04-24 — Premier commit et push GitHub**
+- Remote `origin` = `git@github.com:TheFraTo/Harbor-Project.git`.
+- Commit initial `21f422f` : 46 fichiers, 2529 insertions (docs + solution + 18 projets).
+- Push `main -> main` réussi.
+- *Warning observé :* core.autocrlf=true provoque des warnings "LF will be replaced by CRLF". À neutraliser via un `.gitattributes` propre lors de la tâche 0.5 (ou plus tôt en polish).
+- *Détail :* les templates classlib ont laissé des fichiers `Class1.cs` dans chaque projet. Ils seront supprimés quand on écrira le vrai code métier (Phase 1). Pas un blocker.
 
 ---
 

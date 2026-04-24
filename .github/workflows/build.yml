@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Print .NET info
+        run: dotnet --info
+
+      - name: Restore
+        run: dotnet restore Harbor.sln
+
+      - name: Verify formatting
+        run: dotnet format --verify-no-changes Harbor.sln
+        if: runner.os == 'Linux'
+
+      - name: Build
+        run: dotnet build Harbor.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test Harbor.sln --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: ./test-results/**/*.trx
+          if-no-files-found: warn

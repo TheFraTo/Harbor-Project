@@ -1,0 +1,187 @@
+# EditorConfig — Harbor project
+# https://editorconfig.org
+# Référence .NET : https://learn.microsoft.com/dotnet/fundamentals/code-analysis/code-style-rule-options
+
+root = true
+
+# ==============================================================================
+# Règles globales — tous les fichiers
+# ==============================================================================
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ==============================================================================
+# Fichiers de config / data — indentation réduite
+# ==============================================================================
+[*.{csproj,props,targets,axaml,xaml,xml,config,json,jsonc,yml,yaml,toml}]
+indent_size = 2
+
+[*.{cmd,bat,ps1}]
+end_of_line = crlf
+
+# Markdown : le double espace final = retour chariot volontaire
+[*.md]
+trim_trailing_whitespace = false
+
+# ==============================================================================
+# Code C#
+# ==============================================================================
+[*.cs]
+
+#### File organisation ####
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:warning
+
+#### Namespace declarations ####
+csharp_style_namespace_declarations = file_scoped:error
+
+#### var preferences ####
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+#### Expression-bodied members ####
+csharp_style_expression_bodied_methods = when_on_single_line:silent
+csharp_style_expression_bodied_constructors = false:silent
+csharp_style_expression_bodied_operators = when_on_single_line:silent
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = when_on_single_line:silent
+csharp_style_expression_bodied_local_functions = when_on_single_line:silent
+
+#### Null / patterns ####
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_prefer_pattern_matching = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_prefer_not_pattern = true:suggestion
+
+#### Braces / blocks ####
+csharp_prefer_braces = true:warning
+csharp_prefer_simple_using_statement = true:suggestion
+
+#### New lines ####
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+#### Indentation ####
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+
+#### Spacing ####
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_around_binary_operators = before_and_after
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+
+#### Wrapping ####
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# ==============================================================================
+# Naming conventions C#
+# ==============================================================================
+
+# Styles réutilisables
+dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.camel_case.capitalization = camel_case
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+dotnet_naming_style.i_prefix_pascal.required_prefix = I
+dotnet_naming_style.i_prefix_pascal.capitalization = pascal_case
+dotnet_naming_style.t_prefix_pascal.required_prefix = T
+dotnet_naming_style.t_prefix_pascal.capitalization = pascal_case
+
+# Symboles
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
+dotnet_naming_symbols.type_parameters.applicable_accessibilities = *
+
+dotnet_naming_symbols.types.applicable_kinds = class, struct, enum, delegate
+dotnet_naming_symbols.types.applicable_accessibilities = *
+
+dotnet_naming_symbols.public_members.applicable_kinds = property, method, field, event
+dotnet_naming_symbols.public_members.applicable_accessibilities = public, internal, protected, protected_internal
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_symbols.constants.applicable_kinds = field
+dotnet_naming_symbols.constants.required_modifiers = const
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+
+dotnet_naming_symbols.locals_and_parameters.applicable_kinds = parameter, local
+
+# Règles (appliquées dans l'ordre)
+dotnet_naming_rule.interfaces_rule.severity = warning
+dotnet_naming_rule.interfaces_rule.symbols = interfaces
+dotnet_naming_rule.interfaces_rule.style = i_prefix_pascal
+
+dotnet_naming_rule.type_parameters_rule.severity = warning
+dotnet_naming_rule.type_parameters_rule.symbols = type_parameters
+dotnet_naming_rule.type_parameters_rule.style = t_prefix_pascal
+
+dotnet_naming_rule.types_rule.severity = warning
+dotnet_naming_rule.types_rule.symbols = types
+dotnet_naming_rule.types_rule.style = pascal_case
+
+dotnet_naming_rule.constants_rule.severity = warning
+dotnet_naming_rule.constants_rule.symbols = constants
+dotnet_naming_rule.constants_rule.style = pascal_case
+
+dotnet_naming_rule.public_members_rule.severity = warning
+dotnet_naming_rule.public_members_rule.symbols = public_members
+dotnet_naming_rule.public_members_rule.style = pascal_case
+
+dotnet_naming_rule.private_fields_rule.severity = warning
+dotnet_naming_rule.private_fields_rule.symbols = private_fields
+dotnet_naming_rule.private_fields_rule.style = underscore_camel_case
+
+dotnet_naming_rule.locals_and_parameters_rule.severity = warning
+dotnet_naming_rule.locals_and_parameters_rule.symbols = locals_and_parameters
+dotnet_naming_rule.locals_and_parameters_rule.style = camel_case
+
+# ==============================================================================
+# Severity des analyzers — overrides
+# ==============================================================================
+
+# Usings inutiles : erreur (avec ImplicitUsings, tout using explicite superflu doit sauter)
+dotnet_diagnostic.IDE0005.severity = error
+
+# CLSCompliant : pas applicable (Harbor est app, pas une lib destinée à d'autres langages)
+dotnet_diagnostic.CA1014.severity = none
+
+# Null checks sur paramètres publics : redondant avec nullable reference types
+dotnet_diagnostic.CA1062.severity = suggestion
+
+# Documentation XML publique : pas d'obligation sur un projet d'app (vs une lib)
+dotnet_diagnostic.CS1591.severity = none
+
+# Globalization : on a une app locale, pas de souci i18n pour les exceptions/logs techniques
+dotnet_diagnostic.CA1303.severity = none
+dotnet_diagnostic.CA1304.severity = suggestion
+dotnet_diagnostic.CA1305.severity = suggestion
+dotnet_diagnostic.CA1307.severity = suggestion
+dotnet_diagnostic.CA1308.severity = suggestion
+dotnet_diagnostic.CA1310.severity = suggestion

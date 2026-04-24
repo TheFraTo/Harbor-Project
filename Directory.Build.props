@@ -1,0 +1,59 @@
+<Project>
+
+  <!--
+    Propriétés communes à TOUS les projets de la solution Harbor.
+    Ce fichier est chargé automatiquement par MSBuild pour chaque .csproj
+    situé sous la racine. Il centralise le framework cible, les règles
+    d'analyse strictes, et les métadonnées projet.
+  -->
+
+  <PropertyGroup>
+    <!-- Framework cible unique pour toute la solution -->
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Langage C# et contrats de code -->
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Rigueur du build : tout warning bloque la compilation -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+    <!-- Nécessaire pour activer IDE0005 (usings inutiles) au build-time.
+         Cf. https://github.com/dotnet/roslyn/issues/41640 -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Métadonnées d'assemblage partagées -->
+    <Company>Harbor</Company>
+    <Product>Harbor</Product>
+    <Authors>Harbor contributors</Authors>
+    <Copyright>Copyright © Harbor contributors 2026</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Déterminisme et reproductibilité des builds -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!--
+    Analyzers communs à tous les projets.
+    Microsoft.CodeAnalysis.NetAnalyzers est activé automatiquement via AnalysisLevel.
+    Roslynator ajoute une couche supplémentaire de règles de refactoring et de qualité.
+    PrivateAssets=all empêche la propagation comme dépendance runtime.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.10" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.10" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>
