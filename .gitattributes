@@ -1,0 +1,101 @@
+# Normalisation automatique des line endings
+# https://git-scm.com/docs/gitattributes
+
+# Par défaut : Git détecte les fichiers texte et convertit en LF au commit
+* text=auto eol=lf
+
+# ==============================================================================
+# Sources C# et projets .NET
+# ==============================================================================
+*.cs        text diff=csharp
+*.csproj    text
+*.props     text
+*.targets   text
+*.axaml     text
+*.xaml      text
+
+# .sln reste en CRLF (convention historique Visual Studio)
+*.sln       text eol=crlf
+
+# ==============================================================================
+# Documentation / config
+# ==============================================================================
+*.md        text
+*.txt       text
+*.json      text
+*.jsonc     text
+*.xml       text
+*.yml       text
+*.yaml      text
+*.toml      text
+*.config    text
+.editorconfig       text
+.gitignore          text
+.gitattributes      text
+Directory.Build.*   text
+
+# ==============================================================================
+# Scripts
+# ==============================================================================
+*.sh        text eol=lf
+*.bash      text eol=lf
+*.ps1       text eol=crlf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# ==============================================================================
+# Fichiers binaires (pas de conversion, pas de diff texte)
+# ==============================================================================
+*.dll       binary
+*.exe       binary
+*.pdb       binary
+*.so        binary
+*.dylib     binary
+*.a         binary
+*.lib       binary
+*.pfx       binary
+*.snk       binary
+
+# Images
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.bmp       binary
+*.webp      binary
+
+# SVG est texte mais souvent traité comme binaire selon les conventions
+*.svg       text
+
+# Polices
+*.ttf       binary
+*.otf       binary
+*.woff      binary
+*.woff2     binary
+*.eot       binary
+
+# Archives
+*.zip       binary
+*.7z        binary
+*.tar       binary
+*.gz        binary
+
+# Installeurs
+*.msi       binary
+*.msix      binary
+*.dmg       binary
+*.pkg       binary
+*.deb       binary
+*.rpm       binary
+*.AppImage  binary
+
+# Documents
+*.pdf       binary
+
+# ==============================================================================
+# Linguist overrides (pour GitHub stats)
+# ==============================================================================
+harbor-architecture.md  linguist-documentation
+harbor-roadmap.md       linguist-documentation
+*.md                    linguist-detectable=true
