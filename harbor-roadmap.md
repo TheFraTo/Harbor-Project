@@ -52,7 +52,7 @@ Objectif : disposer du domaine, des interfaces, de la persistance et du keystore
 - [x] 1.1.3 — Créer les types utilitaires (`EncryptedString`, `EncryptedBytes`, `TerminalSize`, `JumpHost`)
 - [x] 1.1.4 — Créer les interfaces d'abstraction (`IRemoteFileSystem`, `IRemoteShell`, `ICloudStorage`, `ITransferEngine`, `IInteractiveSession`, `IPortForward`)
 - [x] 1.1.5 — Créer les EventArgs (`ConnectionStateChangedEventArgs`, etc.)
-- [ ] 1.1.6 — Tests unitaires sur les records / validations
+- [x] 1.1.6 — Tests unitaires sur les records / validations
 
 ### 1.2 Harbor.Data — Persistance SQLite
 - [ ] 1.2.1 — Ajouter les paquets `Microsoft.Data.Sqlite`, `Dapper`, `SQLitePCLRaw.bundle_e_sqlcipher`
