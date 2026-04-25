@@ -134,13 +134,37 @@ public sealed class SshShell : IRemoteShell
     }
 
     /// <inheritdoc />
-    /// <exception cref="NotImplementedException">À implémenter dans la brique 2.6 (SshInteractiveSession + PTY + resize).</exception>
+    /// <remarks>
+    /// Crée un <see cref="ShellStream"/> avec un terminal <c>xterm-256color</c>
+    /// et les dimensions fournies, puis l'enveloppe dans une
+    /// <see cref="SshInteractiveSession"/>. Les dimensions en pixels (width/height)
+    /// sont calculées approximativement (8x16 par cellule) et utilisées seulement
+    /// par les applications qui rendent du graphique inline (rare).
+    /// </remarks>
     public Task<IInteractiveSession> StartInteractiveSessionAsync(
         TerminalSize size,
         CancellationToken ct = default)
     {
-        throw new NotImplementedException(
-            "Sessions interactives non encore disponibles. Implémentation prévue brique 2.6 (SshInteractiveSession).");
+        SshClient client = EnsureConnected();
+        if (size.Columns <= 0 || size.Rows <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(size),
+                "Les dimensions du terminal doivent être strictement positives.");
+        }
+
+        ct.ThrowIfCancellationRequested();
+
+        ShellStream stream = client.CreateShellStream(
+            terminalName: "xterm-256color",
+            columns: (uint)size.Columns,
+            rows: (uint)size.Rows,
+            width: (uint)(size.Columns * 8),
+            height: (uint)(size.Rows * 16),
+            bufferSize: 4096);
+
+        IInteractiveSession session = new SshInteractiveSession(stream);
+        return Task.FromResult(session);
     }
 
     /// <inheritdoc />

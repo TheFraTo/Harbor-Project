@@ -46,14 +46,15 @@ public sealed class SshShellTests
     }
 
     [Fact]
-    public async Task StartInteractiveSessionAsyncThrowsNotImplementedForBrick25Async()
+    public async Task StartInteractiveSessionAsyncBeforeConnectThrowsInvalidOperationAsync()
     {
         await using SshConnection conn = NewConnection();
         await using SshShell shell = new(conn);
 
-        // Comportement attendu en brique 2.5 : l'API existe (contrat IRemoteShell),
-        // mais l'implémentation arrive en brique 2.6.
-        _ = await Assert.ThrowsAsync<NotImplementedException>(
+        // Depuis la brique 2.6, StartInteractiveSessionAsync est implémentée et
+        // lève InvalidOperationException si on n'est pas encore connecté
+        // (au lieu du précédent NotImplementedException de la brique 2.5).
+        _ = await Assert.ThrowsAsync<InvalidOperationException>(
             () => shell.StartInteractiveSessionAsync(TerminalSize.Default));
     }
 

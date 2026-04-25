@@ -81,7 +81,7 @@ Objectif : une première implémentation concrète de `IRemoteFileSystem` et `IR
 - [x] 2.3 — Implémenter `SftpProvider` (`List`, `Stat`, `OpenRead`, `OpenWrite`, `Delete`, `CreateDirectory`, `Rename`, `SetPermissions`)
 - [x] 2.4 — Implémenter les `Capabilities` SFTP
 - [x] 2.5 — Implémenter `SshShell` (`ExecuteAsync` non-interactif, capture stdout/stderr/exit code)
-- [ ] 2.6 — Implémenter `SshInteractiveSession` (ShellStream + resize)
+- [x] 2.6 — Implémenter `SshInteractiveSession` (ShellStream + resize)
 - [ ] 2.7 — Implémenter `JumpHostConnection` (connexion via bastion unique)
 - [ ] 2.8 — Tests d'intégration via Testcontainers (image `linuxserver/openssh-server`)
 - [ ] 2.9 — Tests : upload, download, list, erreurs réseau, reconnexion
