@@ -50,10 +50,11 @@
     Microsoft.CodeAnalysis.NetAnalyzers est activé automatiquement via AnalysisLevel.
     Roslynator ajoute une couche supplémentaire de règles de refactoring et de qualité.
     PrivateAssets=all empêche la propagation comme dépendance runtime.
+    Les versions sont centralisées dans Directory.Packages.props (CPM).
   -->
   <ItemGroup>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.12.10" PrivateAssets="all" />
-    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.10" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
