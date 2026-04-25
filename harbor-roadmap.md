@@ -83,8 +83,8 @@ Objectif : une première implémentation concrète de `IRemoteFileSystem` et `IR
 - [x] 2.5 — Implémenter `SshShell` (`ExecuteAsync` non-interactif, capture stdout/stderr/exit code)
 - [x] 2.6 — Implémenter `SshInteractiveSession` (ShellStream + resize)
 - [x] 2.7 — Implémenter `JumpHostConnection` (connexion via bastion unique)
-- [ ] 2.8 — Tests d'intégration via Testcontainers (image `linuxserver/openssh-server`)
-- [ ] 2.9 — Tests : upload, download, list, erreurs réseau, reconnexion
+- [x] 2.8 — Tests d'intégration via Testcontainers (image `linuxserver/openssh-server`)
+- [x] 2.9 — Tests : upload, download, list, erreurs réseau, reconnexion
 
 ---
 
