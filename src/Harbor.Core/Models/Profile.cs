@@ -22,6 +22,10 @@ namespace Harbor.Core.Models;
 /// <param name="CreatedAt">Date de création.</param>
 /// <param name="UpdatedAt">Date de dernière modification.</param>
 /// <param name="LastUsedAt">Date de dernière utilisation, ou <c>null</c> si jamais utilisé.</param>
+/// <param name="WorkspaceId">
+/// Workspace auquel le profil est rattaché, ou <c>null</c> si non rattaché.
+/// FK vers <see cref="Workspace.Id"/> ; <c>ON DELETE SET NULL</c> côté base.
+/// </param>
 public sealed record Profile(
     Guid Id,
     string Name,
@@ -35,4 +39,5 @@ public sealed record Profile(
     string? Notes,
     DateTimeOffset CreatedAt,
     DateTimeOffset UpdatedAt,
-    DateTimeOffset? LastUsedAt);
+    DateTimeOffset? LastUsedAt,
+    Guid? WorkspaceId = null);

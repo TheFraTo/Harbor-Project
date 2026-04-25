@@ -133,6 +133,70 @@ public sealed class ProfileRepositoryTests
     }
 
     [Fact]
+    public async Task WorkspaceIdRoundTripsAndGetByWorkspaceFiltersProperly()
+    {
+        await using TempDatabaseFixture fixture = await TempDatabaseFixture.CreateAsync();
+        WorkspaceRepository workspaceRepo = new(fixture.Context);
+        ProfileRepository profileRepo = new(fixture.Context);
+
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        Workspace ws = new(Guid.NewGuid(), "Client X", null, null, [], null, now, now);
+        await workspaceRepo.InsertAsync(ws);
+
+        Profile inWs = BuildSshProfile() with { WorkspaceId = ws.Id };
+        Profile orphan = BuildSshProfile();
+        await profileRepo.InsertAsync(inWs);
+        await profileRepo.InsertAsync(orphan);
+
+        Profile? retrieved = await profileRepo.GetByIdAsync(inWs.Id);
+        Assert.NotNull(retrieved);
+        Assert.Equal(ws.Id, retrieved.WorkspaceId);
+
+        IReadOnlyList<Profile> inWorkspace = await profileRepo.GetByWorkspaceAsync(ws.Id);
+        Assert.Single(inWorkspace);
+        Assert.Equal(inWs.Id, inWorkspace[0].Id);
+
+        IReadOnlyList<Guid> ids = await profileRepo.GetIdsByWorkspaceAsync(ws.Id);
+        Assert.Equal([inWs.Id], ids);
+    }
+
+    [Fact]
+    public async Task DeletingWorkspaceNullifiesProfileWorkspaceId()
+    {
+        await using TempDatabaseFixture fixture = await TempDatabaseFixture.CreateAsync();
+        WorkspaceRepository workspaceRepo = new(fixture.Context);
+        ProfileRepository profileRepo = new(fixture.Context);
+
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        Workspace ws = new(Guid.NewGuid(), "Temp", null, null, [], null, now, now);
+        await workspaceRepo.InsertAsync(ws);
+
+        Profile p = BuildSshProfile() with { WorkspaceId = ws.Id };
+        await profileRepo.InsertAsync(p);
+
+        _ = await workspaceRepo.DeleteAsync(ws.Id);
+
+        Profile? retrieved = await profileRepo.GetByIdAsync(p.Id);
+        Assert.NotNull(retrieved);
+        Assert.Null(retrieved.WorkspaceId);
+    }
+
+    private static Profile BuildSshProfile() => new(
+        Id: Guid.NewGuid(),
+        Name: "Probe",
+        Protocol: ProtocolKind.Ssh,
+        Connection: new SshConnectionDetails("h", 22, "u", null),
+        Auth: new AgentAuth(),
+        Tags: [],
+        ParentFolderId: null,
+        EnvVars: new Dictionary<string, string>(),
+        PostConnectScript: null,
+        Notes: null,
+        CreatedAt: DateTimeOffset.UtcNow,
+        UpdatedAt: DateTimeOffset.UtcNow,
+        LastUsedAt: null);
+
+    [Fact]
     public async Task DeleteRemovesProfile()
     {
         await using TempDatabaseFixture fixture = await TempDatabaseFixture.CreateAsync();

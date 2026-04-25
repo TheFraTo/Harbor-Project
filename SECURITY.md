@@ -1,55 +1,57 @@
 # Security Policy
 
-## Versions supportées
+🇫🇷 [Version française](SECURITY.fr.md)
 
-Harbor est encore en phase de développement initial (pré-v1.0). Seule la branche `main` reçoit des correctifs de sécurité pour le moment. Après la sortie de la v1.0, cette politique sera mise à jour pour couvrir les branches de release maintenues.
+## Supported versions
 
-| Version | Supportée |
+Harbor is in early development (pre-v1.0). At this stage, only the `main` branch receives security fixes. After the v1.0 release, this policy will be updated to cover maintained release branches.
+
+| Version | Supported |
 |---------|-----------|
-| `main` (pre-release)   | Oui |
-| Releases v0.x alpha/beta | Au cas par cas, selon la sévérité |
+| `main` (pre-release)   | Yes |
+| v0.x alpha / beta releases | Case-by-case, depending on severity |
 
-## Signaler une vulnérabilité
+## Reporting a vulnerability
 
-**Ne divulguez pas publiquement de vulnérabilité de sécurité via une issue ou une PR publique.**
+**Please do not disclose security issues publicly through issues or pull requests.**
 
-Utilisez à la place la fonctionnalité **"Private vulnerability reporting"** de GitHub :
+Use GitHub's **private vulnerability reporting** feature instead:
 
-1. Ouvrez la page [Security du dépôt](https://github.com/TheFraTo/Harbor-Project/security).
-2. Cliquez sur **Report a vulnerability**.
-3. Décrivez le problème avec autant de détails que possible :
-   - Type de vulnérabilité (ex. fuite de secret, injection, escalation, etc.)
-   - Composant ou fichier concerné (ex. `Harbor.Security`, `Harbor.Protocols.Ssh`)
-   - Étapes de reproduction, proof of concept si disponible
-   - Impact estimé (confidentialité, intégrité, disponibilité)
-   - Version / commit concerné
-   - Mitigation éventuelle proposée
+1. Go to the repository [Security tab](https://github.com/TheFraTo/Harbor-Project/security).
+2. Click **Report a vulnerability**.
+3. Describe the issue with as much detail as possible:
+   - Type of issue (for example: secret leak, injection, privilege escalation, integrity flaw)
+   - Component or file affected (for example: `Harbor.Security`, `Harbor.Protocols.Ssh`)
+   - Steps to reproduce, proof of concept if available
+   - Estimated impact (confidentiality, integrity, availability)
+   - Version or commit affected
+   - Suggested mitigation if any
 
-## Ce à quoi vous attendre
+## What to expect
 
-- **Accusé de réception** sous 72 heures ouvrées.
-- **Évaluation initiale** (sévérité, scope) sous 7 jours.
-- **Plan de correction** communiqué sous 14 jours, proportionné à la gravité.
-- **Divulgation coordonnée** : nous publierons un avis de sécurité après le correctif, en créditant le déclarant si souhaité.
+- **Acknowledgement** within 72 working hours.
+- **Initial assessment** (severity, scope) within 7 days.
+- **Remediation plan** communicated within 14 days, proportional to severity.
+- **Coordinated disclosure**: we publish a security advisory after the fix lands, crediting the reporter if they wish.
 
-## Périmètre
+## Scope
 
-**Dans le périmètre :**
-- Gestion des secrets (keystore, chiffrement, dérivation de clés)
-- Authentification et intégration avec SSH, SFTP, FTP(S), S3, Azure, GCS, Docker, Kubernetes
-- Système de plugins (échappement de sandbox, permissions, accès à l'API Harbor)
-- Sérialisation / désérialisation de profils, imports depuis formats externes
-- API locale HTTP et IPC (escalation, fuite de données)
-- Auto-update : vérification de signature, MITM
+**In scope:**
+- Secret management (keystore, encryption, key derivation)
+- Authentication and integrations with SSH, SFTP, FTP/FTPS, S3, Azure, GCS, Docker, Kubernetes
+- Plugin system (sandbox escapes, permission bypass, Harbor API misuse)
+- Profile serialization and import from external formats
+- Local HTTP API and IPC (privilege escalation, data leaks)
+- Auto-update: signature verification, MITM resistance
 
-**Hors périmètre :**
-- Attaques nécessitant un accès root/admin préalable à la machine hôte (non défendable au niveau applicatif — cf. `harbor-architecture.md` §13.1)
-- Issues des dépendances tierces : signalez-les upstream et ouvrez une issue ici pour le tracking de mise à jour
-- Ingénierie sociale ou phishing visant les utilisateurs
-- Attaques physiques sur la machine
+**Out of scope:**
+- Attacks requiring root or admin access on the host machine before exploitation (cf. `harbor-architecture.md` §13.1 — not defendable at the application layer)
+- Issues in third-party dependencies: please report them upstream and open a tracking issue here for the version bump
+- Social engineering or phishing targeting users
+- Physical attacks on the user's machine
 
-## Remerciements
+## Acknowledgements
 
-Un hall of fame des contributeurs sécurité sera tenu dans les notes de release une fois la v1.0 publiée.
+A security hall of fame will be maintained in the release notes once v1.0 ships.
 
-Merci de nous aider à garder Harbor sûr pour ses utilisateurs.
+Thank you for helping keep Harbor safe for its users.

@@ -1,77 +1,34 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Notre engagement
+🇫🇷 [Version française](CODE_OF_CONDUCT.fr.md)
 
-Nous, en tant que membres, contributeurs et responsables, nous engageons à faire de la participation à notre communauté une expérience exempte de harcèlement pour toute personne, quels que soient l'âge, la taille corporelle, le handicap visible ou invisible, l'appartenance ethnique, les caractéristiques sexuelles, l'identité et l'expression de genre, le niveau d'expérience, l'éducation, le statut socio-économique, la nationalité, l'apparence personnelle, la race, la religion ou l'identité et l'orientation sexuelle.
+## Our pledge
 
-Nous nous engageons à agir et interagir de manière à contribuer à une communauté ouverte, accueillante, diversifiée, inclusive et saine.
+The Harbor community is committed to providing a welcoming, friendly and inclusive experience for everyone. We adopt the [Contributor Covenant version 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) as our official Code of Conduct.
 
-## Nos standards
+The full canonical text is available at:
+**https://www.contributor-covenant.org/version/2/1/code_of_conduct/**
 
-Exemples de comportements qui contribuent à un environnement positif :
+## TL;DR
 
-- Faire preuve d'empathie et de bienveillance envers les autres
-- Respecter les opinions, points de vue et expériences différents
-- Donner et accepter gracieusement les critiques constructives
-- Assumer sa responsabilité et présenter des excuses aux personnes affectées par nos erreurs, et apprendre de l'expérience
-- Se concentrer sur ce qui est le mieux, pas seulement pour nous individuellement, mais pour l'ensemble de la communauté
+- Be respectful and considerate. Disagreements happen; personal attacks do not.
+- Welcome newcomers and help them grow. Everyone was a beginner once.
+- Use inclusive language. Avoid sexualized, exclusionary, or demeaning content.
+- Respect privacy. Do not share private information without consent.
+- Focus on what is best for the community.
 
-Exemples de comportements inacceptables :
+## Scope
 
-- Usage de langage ou d'images sexualisés, et attention ou avances sexuelles de toute nature
-- Trolling, commentaires insultants ou désobligeants, et attaques personnelles ou politiques
-- Harcèlement public ou privé
-- Publication d'informations privées d'autrui, telles qu'une adresse physique ou électronique, sans leur permission explicite
-- Autre conduite qui pourrait raisonnablement être considérée comme inappropriée dans un cadre professionnel
+This Code applies in all Harbor community spaces — GitHub repository (issues, pull requests, discussions, code review comments), official chat channels, social media accounts, and any in-person or online event where someone represents Harbor.
 
-## Responsabilités des mainteneurs
+## Enforcement
 
-Les mainteneurs sont responsables de clarifier et faire respecter nos standards de comportement acceptable et prendront des mesures correctives appropriées et équitables en réponse à tout comportement qu'ils jugent inapproprié, menaçant, offensant ou nuisible.
+If you witness or experience unacceptable behavior, please report it privately to the maintainers using GitHub's [private vulnerability reporting](https://github.com/TheFraTo/Harbor-Project/security/advisories/new) feature. All reports are handled confidentially and reviewed promptly.
 
-Les mainteneurs ont le droit et la responsabilité de supprimer, modifier ou rejeter les commentaires, commits, code, modifications du wiki, issues et autres contributions qui ne sont pas alignés avec ce Code of Conduct, et communiqueront les raisons des décisions de modération le cas échéant.
-
-## Portée
-
-Ce Code of Conduct s'applique dans tous les espaces communautaires, et s'applique également lorsqu'un individu représente officiellement la communauté dans des espaces publics. Les exemples de représentation de notre communauté incluent l'utilisation d'une adresse e-mail officielle, la publication via un compte de réseau social officiel, ou l'action en tant que représentant désigné lors d'un événement en ligne ou hors ligne.
-
-## Application
-
-Les cas de comportement abusif, harcelant ou autrement inacceptable peuvent être signalés aux mainteneurs du projet via la fonctionnalité **"Private vulnerability reporting"** de GitHub ou en ouvrant une issue confidentielle. Toutes les plaintes seront examinées et étudiées rapidement et équitablement.
-
-Tous les mainteneurs du projet sont tenus de respecter la vie privée et la sécurité du déclarant de tout incident.
-
-## Directives d'application
-
-Les mainteneurs du projet suivront ces directives d'impact communautaire pour déterminer les conséquences de toute action qu'ils jugent contraire à ce Code of Conduct :
-
-### 1. Correction
-
-**Impact communautaire :** Usage d'un langage inapproprié ou autre comportement jugé non professionnel ou indésirable dans la communauté.
-
-**Conséquence :** Un avertissement privé et écrit des mainteneurs, fournissant des éclaircissements sur la nature de la violation et une explication de la raison pour laquelle le comportement était inapproprié. Des excuses publiques peuvent être demandées.
-
-### 2. Avertissement
-
-**Impact communautaire :** Violation par un incident unique ou une série d'actions.
-
-**Conséquence :** Un avertissement avec des conséquences en cas de comportement répété. Aucune interaction avec les personnes concernées, y compris les interactions non sollicitées avec ceux qui appliquent le Code of Conduct, pendant une période déterminée. Cela inclut d'éviter les interactions dans les espaces communautaires ainsi que les canaux externes tels que les réseaux sociaux. Une violation de ces termes peut conduire à un bannissement temporaire ou permanent.
-
-### 3. Bannissement temporaire
-
-**Impact communautaire :** Violation grave des standards communautaires, incluant un comportement inapproprié soutenu.
-
-**Conséquence :** Bannissement temporaire de toute sorte d'interaction ou de communication publique avec la communauté pour une période déterminée. Aucune interaction publique ou privée avec les personnes concernées, y compris les interactions non sollicitées avec ceux qui appliquent le Code of Conduct, n'est autorisée pendant cette période. Une violation de ces termes peut conduire à un bannissement permanent.
-
-### 4. Bannissement permanent
-
-**Impact communautaire :** Démonstration d'un modèle de violation des standards communautaires, y compris un comportement inapproprié soutenu, le harcèlement d'un individu, ou l'agression ou le dénigrement de classes d'individus.
-
-**Conséquence :** Bannissement permanent de toute sorte d'interaction publique au sein de la communauté.
+The maintainers reserve the right to remove or edit comments, commits, code, issues, pull requests and other contributions that are not aligned with this Code of Conduct, and to temporarily or permanently ban any contributor for behaviors deemed inappropriate, threatening, or harmful.
 
 ## Attribution
 
-Ce Code of Conduct est adapté du [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, disponible sur [contributor-covenant.org/version/2/1/code_of_conduct.html](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+This Code of Conduct is based on the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct/. The community impact guidelines are inspired by Mozilla's code of conduct enforcement ladder.
 
-Les directives d'impact communautaire ont été inspirées par [l'échelle d'application du code de conduite de Mozilla](https://github.com/mozilla/diversity).
-
-Pour les réponses aux questions courantes sur ce code de conduite, voir la FAQ sur [contributor-covenant.org/faq](https://www.contributor-covenant.org/faq). Les traductions sont disponibles sur [contributor-covenant.org/translations](https://www.contributor-covenant.org/translations).
+For answers to common questions about this code of conduct, see the FAQ at https://www.contributor-covenant.org/faq.

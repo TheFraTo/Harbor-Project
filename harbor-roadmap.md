@@ -287,6 +287,25 @@ Objectif : premier binaire distribuable.
 - Rationale : `SecureString` est déprécié sur .NET (5+) et fortement déconseillé par Microsoft. La protection effective dépend de l'OS, et l'API basée sur char[] est mal adaptée à de l'AES. La master key dérivée a la même sensibilité qu'un secret de longue durée et est zéroïsée explicitement avec `CryptographicOperations.ZeroMemory`.
 - Action documentaire : à reformuler dans `harbor-architecture.md` §13.2 lors du polish.
 
+**2026-04-25 — Audit complet de la Phase 1 — findings et fixes**
+Vérification systématique des 89 tests, des fichiers `*.cs`, du schéma SQL et de la cohérence records ↔ tables. Build vert, tests verts.
+
+*Bugs trouvés et corrigés :*
+- **Profile.WorkspaceId manquant** : le record `Profile` n'avait pas de champ `WorkspaceId`, alors que le schéma `profiles.workspace_id` existait et que `ProfileRepository.GetByWorkspaceAsync` / `GetIdsByWorkspaceAsync` ciblaient cette colonne. Conséquence : association profil↔workspace impossible via les repos (toujours `null`). Fix : ajout de `Guid? WorkspaceId = null` en dernière position du record (default = null pour ne pas casser les callers existants), branchement dans le repo, ajout de 2 tests d'intégration (`WorkspaceIdRoundTripsAndGetByWorkspaceFiltersProperly` + `DeletingWorkspaceNullifiesProfileWorkspaceId` qui valide le `ON DELETE SET NULL`).
+
+*Écarts vs doc d'architecture, non bloquants :*
+- `Profile.ParentFolderId` typé `Guid?` (au lieu de `string?` du doc §9.1). Choix volontaire pour la sécurité de type.
+- `Workspace.ProfileIds` reste vide après lecture par `WorkspaceRepository` — c'est le comportement documenté : la liste est censée être hydratée côté service applicatif via `ProfileRepository.GetIdsByWorkspaceAsync`. Pas de double source de vérité au niveau base.
+- Records contenant des `byte[]` (`EncryptedString`, `EncryptedBytes`, `SshKey.PublicKey`) : l'égalité par défaut des records compare les byte[] par référence. Pas d'impact pour les tests actuels (assertions explicites sur les contenus), mais à garder en tête si on compare deux records désérialisés du même JSON.
+
+*Total tests après fix : 90 (Core 31, Data 34, Security 22, scaffolds 3).*
+
+**2026-04-25 — Documentation bilingue EN/FR**
+- README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY passent en anglais comme source canonique (convention open source GitHub).
+- Versions françaises créées en `*.fr.md`, liens croisés EN↔FR en haut de chaque fichier.
+- README anglais largement enrichi : badges CI/license/status/.NET, status complet de la Phase 1, features détaillées par catégorie, build instructions, project layout, acknowledgments.
+- CODE_OF_CONDUCT remplacé par une version courte qui pointe sur le texte canonique du Contributor Covenant 2.1 plutôt que le reproduire intégralement.
+
 **2026-04-24 — Conflit de namespace `Tests.Keystore` vs production `Security.Keystore`**
 - La sous-arborescence de tests `Harbor.Security.Tests.Keystore` masquait le type `Harbor.Security.Keystore.Keystore`. Résolu via alias `using HarborKeystore = Harbor.Security.Keystore.Keystore;` dans le fichier de tests. Pattern à utiliser si on rencontre d'autres collisions.
 

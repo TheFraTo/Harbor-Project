@@ -1,55 +1,65 @@
 # Contributing to Harbor
 
-Merci pour votre intérêt à contribuer à **Harbor** — le centre de commande unifié, local-first et open-source pour développeurs et sysadmins.
+Thanks for your interest in contributing to **Harbor** — the unified, local-first, open-source command center for developers and sysadmins.
 
-## Avant de commencer
+🇫🇷 [Version française](CONTRIBUTING.fr.md)
 
-- Lisez le [document d'architecture](harbor-architecture.md) pour comprendre la vision, les principes (local-first, privacy by design, keyboard-first) et les choix techniques.
-- Consultez la [feuille de route](harbor-roadmap.md) pour voir où nous en sommes et ce qui est en cours.
-- Respectez le [Code of Conduct](CODE_OF_CONDUCT.md).
+## Before you start
 
-## Installation du poste de développement
+- Read the [architecture document](harbor-architecture.md) to understand the vision, the guiding principles (local-first, privacy by design, keyboard-first) and the technical choices.
+- Check the [roadmap](harbor-roadmap.md) to see where we are and what is in flight.
+- Respect the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-**Pré-requis :**
-- .NET 10 SDK (10.0.2xx ou supérieur)
+## Development environment
+
+**Requirements**
+
+- .NET 10 SDK (10.0.2xx or newer)
 - Git
-- Un IDE compatible : Visual Studio 2022 17.10+, JetBrains Rider 2024.3+, ou VS Code avec C# Dev Kit
+- A compatible IDE: Visual Studio 2022 17.10+, JetBrains Rider 2024.3+, or VS Code with the C# Dev Kit
 
-**Cloner et builder :**
+**Clone and build**
 
 ```bash
-git clone https://github.com/TheFraTo/Harbor-Project.git
+git clone git@github.com:TheFraTo/Harbor-Project.git
 cd Harbor-Project
 dotnet restore
 dotnet build
 dotnet test
 ```
 
-Le build doit passer sans aucun warning ni erreur (mode strict activé).
+The build must pass with **zero warnings and zero errors** (strict mode is enabled).
 
-## Règles de code
+For integration tests that involve real protocols (SFTP, FTP, S3 mocks…), you will also need **Docker** running locally — these tests use [Testcontainers](https://dotnet.testcontainers.org/) to spin up real servers in throwaway containers.
 
-- **Langage :** C# moderne, `LangVersion=latest`, `Nullable=enable`, `ImplicitUsings=enable`.
-- **Style :** défini par `.editorconfig` à la racine. Lancez `dotnet format` avant de committer.
-- **Analyzers :** `Microsoft.CodeAnalysis.NetAnalyzers` (`AnalysisLevel=latest-recommended`) + Roslynator, avec `TreatWarningsAsErrors=true`. Un build qui produit un warning ne passe pas.
-- **Naming :** interfaces préfixées `I`, type parameters préfixés `T`, champs privés en `_camelCase`, types et membres publics en `PascalCase`.
-- **Tests :** tout bug fix doit venir avec un test de non-régression. Les nouvelles features ont un coverage xUnit raisonnable (services = tests unitaires, providers = tests d'intégration avec Testcontainers).
+## Code style
 
-## Processus de contribution
+- **Language**: modern C# with `LangVersion=latest`, `Nullable=enable`, `ImplicitUsings=enable`.
+- **Formatting**: defined by `.editorconfig` at the repo root. Run `dotnet format` before committing.
+- **Analyzers**: `Microsoft.CodeAnalysis.NetAnalyzers` (`AnalysisLevel=latest-recommended`) plus Roslynator, with `TreatWarningsAsErrors=true`. A build that produces a warning will not pass.
+- **Naming**:
+  - Interfaces are prefixed `I` (`IRemoteFileSystem`).
+  - Type parameters are prefixed `T` (`TKey`).
+  - Private fields are `_camelCase`.
+  - Types and public members are `PascalCase`.
+  - Locals and parameters are `camelCase`.
+- **Tests**: every bug fix should ship with a regression test. New features should come with reasonable xUnit coverage. Service tests are unit tests with mocks; provider tests are integration tests using Testcontainers.
 
-1. **Ouvrez une issue** avant d'attaquer un changement non-trivial, pour discuter de l'approche.
-2. **Forkez** le repo et créez une branche `feat/ma-feature`, `fix/mon-bug`, ou `docs/ma-doc`.
-3. **Commitez** avec des messages clairs. Privilégiez [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `chore:`, etc.).
-4. **Poussez** et ouvrez une Pull Request vers `main`.
-5. La CI doit passer. Si elle échoue, regardez les logs avant de demander un review.
-6. Un mainteneur relit, commente, merge.
+## How to contribute
 
-## Règles anti-scope-creep
+1. **Open an issue first** for any non-trivial change so the approach can be discussed before code is written.
+2. **Fork** the repo and create a branch named `feat/my-feature`, `fix/my-bug` or `docs/my-doc`.
+3. **Commit** with clear messages. We prefer [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `chore:`, etc.).
+4. **Push** and open a Pull Request targeting `main`.
+5. CI must be green. If a check fails, look at the logs before requesting review.
+6. A maintainer reviews, comments, and merges.
 
-- Une PR = un sujet. Pas de mega-PRs mélangeant refactor + feature + docs.
-- Pas de changement d'architecture sans RFC discutée au préalable en issue.
-- Pas d'ajout de dépendance sans justification explicite (poids du binaire, licence, mainteneurs actifs).
+## Anti scope-creep rules
 
-## Licence
+- One PR equals one topic. No mega-PRs mixing refactor + feature + docs.
+- No architectural changes without an RFC discussed first in an issue.
+- No new dependency without explicit justification (binary size impact, license, active maintainers).
 
-En contribuant, vous acceptez que votre contribution soit publiée sous la [licence MIT](LICENSE).
+## License
+
+By contributing, you agree that your contribution is licensed under the [MIT License](LICENSE).

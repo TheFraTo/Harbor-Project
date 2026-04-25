@@ -158,7 +158,7 @@ public sealed class ProfileRepository
         SELECT id, name, protocol, workspace_id, parent_folder_id,
                connection_json, auth_json, tags, env_vars_json,
                post_connect_script, notes,
-               created_at, updated_at, last_used_at
+               created_at, updated_at, last_used_at, workspace_id
         """ + " ";
 
     private static void BindInsertOrUpdateParameters(SqliteCommand cmd, Profile profile)
@@ -178,7 +178,9 @@ public sealed class ProfileRepository
         _ = cmd.Parameters.AddWithValue("$envVarsJson", envVarsJson);
         _ = cmd.Parameters.AddWithValue("$postConnectScript", (object?)profile.PostConnectScript ?? DBNull.Value);
         _ = cmd.Parameters.AddWithValue("$notes", (object?)profile.Notes ?? DBNull.Value);
-        _ = cmd.Parameters.AddWithValue("$workspaceId", DBNull.Value); // Le workspace_id est géré séparément
+        _ = cmd.Parameters.AddWithValue(
+            "$workspaceId",
+            (object?)profile.WorkspaceId?.ToString() ?? DBNull.Value);
         _ = cmd.Parameters.AddWithValue(
             "$parentFolderId",
             (object?)profile.ParentFolderId?.ToString() ?? DBNull.Value);
@@ -221,6 +223,7 @@ public sealed class ProfileRepository
             Notes: reader.IsDBNull(10) ? null : reader.GetString(10),
             CreatedAt: DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(11)),
             UpdatedAt: DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(12)),
-            LastUsedAt: reader.IsDBNull(13) ? null : DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(13)));
+            LastUsedAt: reader.IsDBNull(13) ? null : DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(13)),
+            WorkspaceId: reader.IsDBNull(14) ? null : Guid.Parse(reader.GetString(14)));
     }
 }
