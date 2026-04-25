@@ -21,6 +21,10 @@
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1" />
   </ItemGroup>
 
+  <ItemGroup Label="Protocoles réseau">
+    <PackageVersion Include="SSH.NET" Version="2025.1.0" />
+  </ItemGroup>
+
   <ItemGroup Label="Persistance et données">
     <PackageVersion Include="Microsoft.Data.Sqlite.Core" Version="10.0.7" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.11" />

@@ -76,7 +76,7 @@ Objectif : disposer du domaine, des interfaces, de la persistance et du keystore
 
 Objectif : une première implémentation concrète de `IRemoteFileSystem` et `IRemoteShell` via SSH.NET.
 
-- [ ] 2.1 — Ajouter le paquet `SSH.NET`
+- [x] 2.1 — Ajouter le paquet `SSH.NET`
 - [ ] 2.2 — Implémenter `SshConnection` (connexion password + clé Ed25519/RSA, passphrase, keep-alive)
 - [ ] 2.3 — Implémenter `SftpProvider` (`List`, `Stat`, `OpenRead`, `OpenWrite`, `Delete`, `CreateDirectory`, `Rename`, `SetPermissions`)
 - [ ] 2.4 — Implémenter les `Capabilities` SFTP
