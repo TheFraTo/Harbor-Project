@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Harbor.Core.Common;
 
 namespace Harbor.Core.Models;
@@ -7,6 +8,24 @@ namespace Harbor.Core.Models;
 /// supporté par Harbor dérive un type concret avec les champs qui lui sont
 /// propres (host/port pour SSH, endpoint/region/bucket pour S3, etc.).
 /// </summary>
+/// <remarks>
+/// La sérialisation JSON polymorphique utilise le discriminant <c>$kind</c>
+/// avec les valeurs déclarées par les attributs <see cref="JsonDerivedTypeAttribute"/>.
+/// Ce contrat est stable et fait partie du format de persistance — toute
+/// modification doit faire l'objet d'une migration.
+/// </remarks>
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$kind")]
+[JsonDerivedType(typeof(SshConnectionDetails), "ssh")]
+[JsonDerivedType(typeof(FtpConnectionDetails), "ftp")]
+[JsonDerivedType(typeof(S3ConnectionDetails), "s3")]
+[JsonDerivedType(typeof(AzureBlobConnectionDetails), "azure-blob")]
+[JsonDerivedType(typeof(GoogleCloudStorageConnectionDetails), "gcs")]
+[JsonDerivedType(typeof(WebDavConnectionDetails), "webdav")]
+[JsonDerivedType(typeof(DockerConnectionDetails), "docker")]
+[JsonDerivedType(typeof(KubernetesConnectionDetails), "k8s")]
+[JsonDerivedType(typeof(TelnetConnectionDetails), "telnet")]
+[JsonDerivedType(typeof(SerialPortConnectionDetails), "serial")]
+[JsonDerivedType(typeof(MoshConnectionDetails), "mosh")]
 public abstract record ConnectionDetails;
 
 /// <summary>Détails pour une connexion SSH / SFTP / SCP.</summary>

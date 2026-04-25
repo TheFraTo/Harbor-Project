@@ -59,8 +59,8 @@ Objectif : disposer du domaine, des interfaces, de la persistance et du keystore
 - [ ] 1.2.2 — Créer `HarborDbContext` (ouverture/fermeture, pragma SQLCipher)
 - [ ] 1.2.3 — Écrire le script SQL initial conforme à `harbor-architecture.md` §9.2
 - [ ] 1.2.4 — Mettre en place un système de migrations (numérotées `0001_init.sql`, etc.)
-- [ ] 1.2.5 — Créer `WorkspaceRepository`, `ProfileRepository`, `SshKeyRepository`, `TransferRepository`, `AuditLogRepository`, `SnippetRepository`
-- [ ] 1.2.6 — Tests d'intégration SQLite (DB en mémoire + DB fichier)
+- [x] 1.2.5 — Créer `WorkspaceRepository`, `ProfileRepository`, `SshKeyRepository`, `TransferRepository`, `AuditLogRepository`, `SnippetRepository`
+- [x] 1.2.6 — Tests d'intégration SQLite (DB en mémoire + DB fichier)
 
 ### 1.3 Harbor.Security — Keystore et crypto
 - [ ] 1.3.1 — Ajouter `Konscious.Security.Cryptography.Argon2`
@@ -271,6 +271,16 @@ Objectif : premier binaire distribuable.
 - Validation finale UX / visuelle à chaque release
 - Tests sur infrastructure réelle (serveurs, buckets cloud)
 - Audit sécurité externe avant V1.0
+
+**2026-04-24 — Sérialisation JSON polymorphique pour ConnectionDetails / AuthenticationMethod**
+- Décision : utiliser `[JsonPolymorphic]` + `[JsonDerivedType]` (System.Text.Json built-in) directement sur les types `Harbor.Core`, plutôt qu'un `TypeInfoResolver` custom dans `Harbor.Data`.
+- Rationale : System.Text.Json est dans le BCL .NET, pas une dépendance externe. Les attributs sont auto-documentants et sans bruit. Le couplage est nul en pratique.
+- Discriminant utilisé : propriété `$kind`. Valeurs : `ssh`, `ftp`, `s3`, `azure-blob`, `gcs`, `webdav`, `docker`, `k8s`, `telnet`, `serial`, `mosh` pour les connexions ; `password`, `key`, `agent`, `fido`, `access-key`, `service-account`, `connection-string`, `bearer-token`, `anonymous` pour l'auth.
+- *Format de persistance stable :* toute évolution de ces noms doit faire l'objet d'une migration de données.
+
+**2026-04-24 — FK `ON DELETE SET NULL` à respecter dans les tests**
+- `transfers.source_profile_id`, `transfers.dest_profile_id` et `audit_log.profile_id` ont des FK vers `profiles(id)`. Avec `PRAGMA foreign_keys = ON`, les tests qui insèrent un GUID arbitraire échouent (FOREIGN KEY constraint failed).
+- Pattern adopté : pour les tests qui n'ont pas besoin d'une vraie liaison, utiliser `null`. Pour ceux qui ont besoin d'un profil, l'insérer d'abord via `ProfileRepository`.
 
 ### Décisions prises
 

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Harbor.Core.Common;
 
 namespace Harbor.Core.Models;
@@ -7,6 +8,23 @@ namespace Harbor.Core.Models;
 /// Chaque variante encapsule le matériel nécessaire pour prouver l'identité
 /// du client auprès du système distant.
 /// </summary>
+/// <remarks>
+/// La sérialisation JSON polymorphique utilise le discriminant <c>$kind</c>.
+/// Les secrets (champs <see cref="Common.EncryptedString"/> et
+/// <see cref="Common.EncryptedBytes"/>) sont sérialisés en base64 par
+/// System.Text.Json — ils ne sont jamais en clair dans le JSON, mais ils
+/// restent chiffrés sous-jacent par le keystore Harbor.
+/// </remarks>
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "$kind")]
+[JsonDerivedType(typeof(PasswordAuth), "password")]
+[JsonDerivedType(typeof(KeyAuth), "key")]
+[JsonDerivedType(typeof(AgentAuth), "agent")]
+[JsonDerivedType(typeof(FidoAuth), "fido")]
+[JsonDerivedType(typeof(AccessKeyAuth), "access-key")]
+[JsonDerivedType(typeof(ServiceAccountJsonAuth), "service-account")]
+[JsonDerivedType(typeof(ConnectionStringAuth), "connection-string")]
+[JsonDerivedType(typeof(BearerTokenAuth), "bearer-token")]
+[JsonDerivedType(typeof(AnonymousAuth), "anonymous")]
 public abstract record AuthenticationMethod;
 
 /// <summary>Authentification par mot de passe.</summary>
