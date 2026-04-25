@@ -168,7 +168,7 @@ public sealed class SshShell : IRemoteShell
     }
 
     /// <inheritdoc />
-    /// <exception cref="NotImplementedException">À implémenter dans la brique 2.7 (port forwarding + jump hosts).</exception>
+    /// <exception cref="NotImplementedException">À implémenter en Phase 8 (port forwarding UI + tunnels).</exception>
     public Task<IPortForward> CreateLocalForwardAsync(
         int localPort,
         string remoteHost,
@@ -176,11 +176,11 @@ public sealed class SshShell : IRemoteShell
         CancellationToken ct = default)
     {
         throw new NotImplementedException(
-            "Port forwarding local non encore disponible. Implémentation prévue brique 2.7.");
+            "Port forwarding local non encore disponible. Implémentation prévue Phase 8 (Power Features).");
     }
 
     /// <inheritdoc />
-    /// <exception cref="NotImplementedException">À implémenter dans la brique 2.7.</exception>
+    /// <exception cref="NotImplementedException">À implémenter en Phase 8.</exception>
     public Task<IPortForward> CreateRemoteForwardAsync(
         int remotePort,
         string localHost,
@@ -188,17 +188,17 @@ public sealed class SshShell : IRemoteShell
         CancellationToken ct = default)
     {
         throw new NotImplementedException(
-            "Port forwarding remote non encore disponible. Implémentation prévue brique 2.7.");
+            "Port forwarding remote non encore disponible. Implémentation prévue Phase 8 (Power Features).");
     }
 
     /// <inheritdoc />
-    /// <exception cref="NotImplementedException">À implémenter dans la brique 2.7.</exception>
+    /// <exception cref="NotImplementedException">À implémenter en Phase 8.</exception>
     public Task<IPortForward> CreateDynamicForwardAsync(
         int localPort,
         CancellationToken ct = default)
     {
         throw new NotImplementedException(
-            "Port forwarding dynamique (SOCKS) non encore disponible. Implémentation prévue brique 2.7.");
+            "Port forwarding dynamique (SOCKS) non encore disponible. Implémentation prévue Phase 8 (Power Features).");
     }
 
     /// <inheritdoc />
