@@ -50,8 +50,12 @@ jobs:
       - name: Build
         run: dotnet build Harbor.sln --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test Harbor.sln --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+      - name: Test (unit)
+        run: dotnet test Harbor.sln --configuration Release --no-build --filter "Category!=Integration" --logger "trx;LogFileName=test-results-unit.trx" --results-directory ./test-results
+
+      - name: Test (integration, Linux only — Docker available)
+        if: runner.os == 'Linux'
+        run: dotnet test Harbor.sln --configuration Release --no-build --filter "Category=Integration" --logger "trx;LogFileName=test-results-integration.trx" --results-directory ./test-results
 
       - name: Upload test results
         if: always()

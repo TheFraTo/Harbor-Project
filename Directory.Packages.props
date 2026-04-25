@@ -47,4 +47,8 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
   </ItemGroup>
 
+  <ItemGroup Label="Tests d'intégration (Docker)">
+    <PackageVersion Include="Testcontainers" Version="4.11.0" />
+  </ItemGroup>
+
 </Project>

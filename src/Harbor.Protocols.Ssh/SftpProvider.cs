@@ -222,10 +222,20 @@ public sealed class SftpProvider : IRemoteFileSystem
         ArgumentException.ThrowIfNullOrEmpty(path);
         SftpClient client = EnsureConnected();
 
-        // UnixFileMode en C# utilise les mêmes bits POSIX (rwxrwxrwx + sticky/setgid/setuid)
-        // que le mode octal Unix. SSH.NET attend un short, on tronque les 12 bits utiles.
-        short octalMode = (short)((int)mode & 0xFFF);
+        // SSH.NET attend le mode en "octal-as-decimal" : pour chmod 600,
+        // passer le SHORT 600 (et non 0o600 = 384 décimal en bitfield).
+        // Conversion : bits POSIX rwxrwxrwx → 3 chiffres octaux assemblés en décimal.
+        short octalMode = ConvertUnixFileModeToOctalShort(mode);
         await Task.Run(() => client.ChangePermissions(path, octalMode), ct).ConfigureAwait(false);
+    }
+
+    private static short ConvertUnixFileModeToOctalShort(UnixFileMode mode)
+    {
+        int posixBits = (int)mode & 0x1FF;        // 9 bits rwxrwxrwx
+        int user = (posixBits >> 6) & 0x7;        // bits 6-8
+        int group = (posixBits >> 3) & 0x7;       // bits 3-5
+        int other = posixBits & 0x7;              // bits 0-2
+        return (short)((user * 100) + (group * 10) + other);
     }
 
     /// <inheritdoc />
@@ -286,8 +296,10 @@ public sealed class SftpProvider : IRemoteFileSystem
         SftpFileAttributes attrs = entry.Attributes;
         UnixFileMode? permissions = MapPermissions(attrs);
 
-        DateTimeOffset? lastModified = attrs.LastWriteTime != default
-            ? new DateTimeOffset(attrs.LastWriteTime, TimeSpan.Zero).ToUniversalTime()
+        // SftpFileAttributes.LastWriteTime est en Kind=Local ; on passe par
+        // LastWriteTimeUtc (Kind=Utc) pour construire un DateTimeOffset propre.
+        DateTimeOffset? lastModified = attrs.LastWriteTimeUtc != default
+            ? new DateTimeOffset(attrs.LastWriteTimeUtc, TimeSpan.Zero)
             : null;
 
         return new RemoteFile(

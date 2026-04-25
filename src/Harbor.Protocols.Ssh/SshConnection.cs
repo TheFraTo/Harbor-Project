@@ -21,8 +21,10 @@ namespace Harbor.Protocols.Ssh;
 /// de rester indépendant de <c>Harbor.Security</c>.
 /// </para>
 /// <para>
-/// Pas de retry intégré (<c>RetryAttempts = 0</c>) — la reconnexion automatique
-/// après coupure est la responsabilité du <c>ConnectionManager</c> (Phase 3).
+/// On laisse <c>RetryAttempts</c> à sa valeur par défaut SSH.NET — il sert
+/// notamment à la logique d'ouverture de canaux secondaires (SFTP). La
+/// reconnexion automatique après coupure réseau reste la responsabilité
+/// du <c>ConnectionManager</c> (Phase 3).
 /// </para>
 /// <para>
 /// Cette classe n'est pas thread-safe. Un consommateur unique est attendu pour
@@ -60,6 +62,16 @@ public sealed class SshConnection : IAsyncDisposable
         _targetAuthMethod = targetAuthMethod;
         KeepAliveInterval = keepAliveInterval;
         _bastion = bastion;
+
+        // Pour une connexion directe, ConnectionInfo peut être construit
+        // immédiatement : ça permet à SftpProvider et SshShell de spawner
+        // leur client sans forcer la SshConnection parente à être ouverte.
+        // Pour un bastion, c'est différé à ConnectAsync (port local pas
+        // encore connu).
+        if (bastion is null)
+        {
+            _liveConnectionInfo = new ConnectionInfo(targetHost, targetPort, targetUsername, targetAuthMethod);
+        }
     }
 
     /// <summary>Hôte cible (DNS ou IP) tel que vu côté logique. Pour une connexion via bastion, <i>pas</i> l'adresse intermédiaire 127.0.0.1.</summary>
@@ -219,13 +231,14 @@ public sealed class SshConnection : IAsyncDisposable
 
                 actualHost = "127.0.0.1";
                 actualPort = localPort;
+
+                // Pour le cas bastion, on (re)construit ConnectionInfo avec le port
+                // local fraîchement alloué (pas encore connu au constructeur).
+                _liveConnectionInfo = new ConnectionInfo(actualHost, actualPort, _targetUsername, _targetAuthMethod);
             }
 
-            _liveConnectionInfo = new ConnectionInfo(actualHost, actualPort, _targetUsername, _targetAuthMethod)
-            {
-                RetryAttempts = 0,
-            };
-            _client = new SshClient(_liveConnectionInfo)
+            // Pour le direct, _liveConnectionInfo a été construit dans le constructeur.
+            _client = new SshClient(_liveConnectionInfo!)
             {
                 KeepAliveInterval = KeepAliveInterval,
             };
@@ -286,16 +299,18 @@ public sealed class SshConnection : IAsyncDisposable
     }
 
     /// <summary>
-    /// Accès interne aux paramètres de connexion live (incluant le routage
-    /// 127.0.0.1:port pour les bastions). Disponible uniquement après
-    /// <see cref="ConnectAsync"/>.
+    /// Accès interne aux paramètres de connexion. Pour une connexion directe,
+    /// disponible immédiatement (construit au factory). Pour une connexion
+    /// bastion, requiert d'avoir appelé <see cref="ConnectAsync"/> au préalable
+    /// (le port local du forward n'est connu qu'à ce moment-là).
     /// </summary>
     internal ConnectionInfo GetConnectionInfo()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         return _liveConnectionInfo
             ?? throw new InvalidOperationException(
-                $"La connexion n'a pas encore été ouverte. Appelez {nameof(ConnectAsync)} d'abord.");
+                $"Une connexion via bastion doit d'abord être ouverte ({nameof(ConnectAsync)}) " +
+                "pour exposer ses paramètres réels (le port local du forward n'est connu qu'à ce moment-là).");
     }
 
     /// <inheritdoc />
