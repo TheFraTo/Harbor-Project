@@ -78,8 +78,8 @@ Objectif : une première implémentation concrète de `IRemoteFileSystem` et `IR
 
 - [x] 2.1 — Ajouter le paquet `SSH.NET`
 - [x] 2.2 — Implémenter `SshConnection` (connexion password + clé Ed25519/RSA, passphrase, keep-alive)
-- [ ] 2.3 — Implémenter `SftpProvider` (`List`, `Stat`, `OpenRead`, `OpenWrite`, `Delete`, `CreateDirectory`, `Rename`, `SetPermissions`)
-- [ ] 2.4 — Implémenter les `Capabilities` SFTP
+- [x] 2.3 — Implémenter `SftpProvider` (`List`, `Stat`, `OpenRead`, `OpenWrite`, `Delete`, `CreateDirectory`, `Rename`, `SetPermissions`)
+- [x] 2.4 — Implémenter les `Capabilities` SFTP
 - [ ] 2.5 — Implémenter `SshShell` (`ExecuteAsync` non-interactif, capture stdout/stderr/exit code)
 - [ ] 2.6 — Implémenter `SshInteractiveSession` (ShellStream + resize)
 - [ ] 2.7 — Implémenter `JumpHostConnection` (connexion via bastion unique)
