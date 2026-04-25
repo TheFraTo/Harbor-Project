@@ -1,13 +1,15 @@
 # Harbor
 
 > **The modern, open-source, privacy-first command center for developers and sysadmins.**
-Project paused Project paused Project paused Project paused Project paused Project paused Project paused Project paused
+
 [![Build](https://github.com/TheFraTo/Harbor-Project/actions/workflows/build.yml/badge.svg)](https://github.com/TheFraTo/Harbor-Project/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status: pre-alpha](https://img.shields.io/badge/status-pre--alpha-orange)]()
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4)]()
 
 🇫🇷 [Version française](README.fr.md)
+
+Project paused - Project paused - Project paused - Project paused - Project paused
 
 ---
 
