@@ -63,12 +63,12 @@ Objectif : disposer du domaine, des interfaces, de la persistance et du keystore
 - [x] 1.2.6 — Tests d'intégration SQLite (DB en mémoire + DB fichier)
 
 ### 1.3 Harbor.Security — Keystore et crypto
-- [ ] 1.3.1 — Ajouter `Konscious.Security.Cryptography.Argon2`
-- [ ] 1.3.2 — Implémenter `KeyDerivation` (Argon2id m=64MB, t=3, p=4, salt 16 bytes)
-- [ ] 1.3.3 — Implémenter `SymmetricCrypto` (AES-256-GCM chiffrement/déchiffrement avec nonce aléatoire)
-- [ ] 1.3.4 — Implémenter `Keystore` (unlock avec master password, stockage en RAM via `SecureString`, zeroisation au logout, timeout d'inactivité)
-- [ ] 1.3.5 — Implémenter `AuditLogger`
-- [ ] 1.3.6 — Tests unitaires exhaustifs sur la crypto (vecteurs de test, nonce unique, intégrité)
+- [x] 1.3.1 — Ajouter `Konscious.Security.Cryptography.Argon2`
+- [x] 1.3.2 — Implémenter `KeyDerivation` (Argon2id m=64MB, t=3, p=4, salt 16 bytes)
+- [x] 1.3.3 — Implémenter `SymmetricCrypto` (AES-256-GCM chiffrement/déchiffrement avec nonce aléatoire)
+- [x] 1.3.4 — Implémenter `Keystore` (unlock avec master password, stockage en RAM via `SecureString`, zeroisation au logout, timeout d'inactivité)
+- [x] 1.3.5 — Implémenter `AuditLogger`
+- [x] 1.3.6 — Tests unitaires exhaustifs sur la crypto (vecteurs de test, nonce unique, intégrité)
 
 ---
 
@@ -281,6 +281,14 @@ Objectif : premier binaire distribuable.
 **2026-04-24 — FK `ON DELETE SET NULL` à respecter dans les tests**
 - `transfers.source_profile_id`, `transfers.dest_profile_id` et `audit_log.profile_id` ont des FK vers `profiles(id)`. Avec `PRAGMA foreign_keys = ON`, les tests qui insèrent un GUID arbitraire échouent (FOREIGN KEY constraint failed).
 - Pattern adopté : pour les tests qui n'ont pas besoin d'une vraie liaison, utiliser `null`. Pour ceux qui ont besoin d'un profil, l'insérer d'abord via `ProfileRepository`.
+
+**2026-04-24 — Keystore — `byte[]` aligné plutôt que `SecureString`**
+- L'archi §13.2 mentionne `SecureString` pour la rétention du master password en RAM. **Choix retenu** : conserver uniquement la **master key dérivée** (32 octets, `byte[]`) en mémoire — pas le password en clair. Le password n'existe que le temps d'un appel à `Unlock` puis est zéroïsé.
+- Rationale : `SecureString` est déprécié sur .NET (5+) et fortement déconseillé par Microsoft. La protection effective dépend de l'OS, et l'API basée sur char[] est mal adaptée à de l'AES. La master key dérivée a la même sensibilité qu'un secret de longue durée et est zéroïsée explicitement avec `CryptographicOperations.ZeroMemory`.
+- Action documentaire : à reformuler dans `harbor-architecture.md` §13.2 lors du polish.
+
+**2026-04-24 — Conflit de namespace `Tests.Keystore` vs production `Security.Keystore`**
+- La sous-arborescence de tests `Harbor.Security.Tests.Keystore` masquait le type `Harbor.Security.Keystore.Keystore`. Résolu via alias `using HarborKeystore = Harbor.Security.Keystore.Keystore;` dans le fichier de tests. Pattern à utiliser si on rencontre d'autres collisions.
 
 ### Décisions prises
 
