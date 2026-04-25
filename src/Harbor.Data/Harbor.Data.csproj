@@ -18,10 +18,4 @@
     <EmbeddedResource Include="Migrations\*.sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Permet aux tests d'intégration d'accéder aux helpers internes
-         (notamment HarborDbContext.DeriveTestKey). -->
-    <InternalsVisibleTo Include="Harbor.Data.Tests" />
-  </ItemGroup>
-
 </Project>

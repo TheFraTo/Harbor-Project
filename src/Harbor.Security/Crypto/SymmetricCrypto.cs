@@ -28,14 +28,18 @@ public static class SymmetricCrypto
     /// <summary>Taille du tag d'authentification : 16 octets (128 bits).</summary>
     public const int TagLength = 16;
 
-    /// <summary>Chiffre une chaîne UTF-8 et renvoie l'enveloppe <see cref="EncryptedString"/>.</summary>
+    /// <summary>
+    /// Chiffre une chaîne UTF-8 et renvoie l'enveloppe <see cref="EncryptedString"/>.
+    /// Délègue à <see cref="EncryptBytes"/> et zéroïse la copie UTF-8 intermédiaire.
+    /// </summary>
     public static EncryptedString EncryptString(string plaintext, byte[] key)
     {
         ArgumentNullException.ThrowIfNull(plaintext);
         byte[] plain = Encoding.UTF8.GetBytes(plaintext);
         try
         {
-            return EncryptStringInternal(plain, key);
+            EncryptedBytes raw = EncryptBytes(plain, key);
+            return new EncryptedString(raw.Nonce, raw.Ciphertext, raw.Tag);
         }
         finally
         {
@@ -82,22 +86,6 @@ public static class SymmetricCrypto
     {
         ArgumentNullException.ThrowIfNull(envelope);
         return DecryptToBytes(envelope.Nonce, envelope.Ciphertext, envelope.Tag, key);
-    }
-
-    private static EncryptedString EncryptStringInternal(byte[] plaintext, byte[] key)
-    {
-        ValidateKey(key);
-
-        byte[] nonce = new byte[NonceLength];
-        RandomNumberGenerator.Fill(nonce);
-
-        byte[] ciphertext = new byte[plaintext.Length];
-        byte[] tag = new byte[TagLength];
-
-        using AesGcm aes = new(key, TagLength);
-        aes.Encrypt(nonce, plaintext, ciphertext, tag);
-
-        return new EncryptedString(nonce, ciphertext, tag);
     }
 
     private static byte[] DecryptToBytes(byte[] nonce, byte[] ciphertext, byte[] tag, byte[] key)

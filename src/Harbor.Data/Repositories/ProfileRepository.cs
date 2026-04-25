@@ -158,7 +158,7 @@ public sealed class ProfileRepository
         SELECT id, name, protocol, workspace_id, parent_folder_id,
                connection_json, auth_json, tags, env_vars_json,
                post_connect_script, notes,
-               created_at, updated_at, last_used_at, workspace_id
+               created_at, updated_at, last_used_at
         """ + " ";
 
     private static void BindInsertOrUpdateParameters(SqliteCommand cmd, Profile profile)
@@ -224,6 +224,6 @@ public sealed class ProfileRepository
             CreatedAt: DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(11)),
             UpdatedAt: DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(12)),
             LastUsedAt: reader.IsDBNull(13) ? null : DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64(13)),
-            WorkspaceId: reader.IsDBNull(14) ? null : Guid.Parse(reader.GetString(14)));
+            WorkspaceId: reader.IsDBNull(3) ? null : Guid.Parse(reader.GetString(3)));
     }
 }

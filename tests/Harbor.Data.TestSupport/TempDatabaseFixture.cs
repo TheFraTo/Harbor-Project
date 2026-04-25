@@ -1,6 +1,6 @@
 using Harbor.Data.Migrations;
 
-namespace Harbor.Data.Tests.Fixtures;
+namespace Harbor.Data.TestSupport;
 
 /// <summary>
 /// Fournit une base SQLite temporaire chiffrée et initialisée (migrations
@@ -23,7 +23,7 @@ public sealed class TempDatabaseFixture : IAsyncDisposable
     public static async Task<TempDatabaseFixture> CreateAsync(CancellationToken ct = default)
     {
         string path = Path.Combine(Path.GetTempPath(), $"harbor-test-{Guid.NewGuid():N}.db");
-        byte[] key = HarborDbContext.DeriveTestKey("integration-tests-passphrase");
+        byte[] key = TestKey.Derive("integration-tests-passphrase");
         HarborDbOptions options = new(path, key);
 
         HarborDbContext ctx = new(options);

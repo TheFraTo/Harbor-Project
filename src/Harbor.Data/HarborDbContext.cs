@@ -154,14 +154,4 @@ public sealed class HarborDbContext : IAsyncDisposable, IDisposable
         }
     }
 
-    /// <summary>
-    /// Convertit une chaîne en clé SQLCipher de 32 octets via un hash simple
-    /// (utilitaire de test uniquement — en production, passer par Argon2id dans Harbor.Security).
-    /// </summary>
-    internal static byte[] DeriveTestKey(string passphrase)
-    {
-        ArgumentNullException.ThrowIfNull(passphrase);
-        byte[] input = System.Text.Encoding.UTF8.GetBytes(passphrase);
-        return System.Security.Cryptography.SHA256.HashData(input);
-    }
 }

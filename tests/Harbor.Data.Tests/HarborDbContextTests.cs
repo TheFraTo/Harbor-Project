@@ -1,4 +1,4 @@
-using Harbor.Data.Tests.Fixtures;
+using Harbor.Data.TestSupport;
 
 namespace Harbor.Data.Tests;
 
@@ -17,7 +17,7 @@ public sealed class HarborDbContextTests
     [Fact]
     public async Task ConnectionThrowsBeforeOpen()
     {
-        byte[] key = HarborDbContext.DeriveTestKey("x");
+        byte[] key = TestKey.Derive("x");
         string path = Path.Combine(Path.GetTempPath(), $"harbor-preopen-{Guid.NewGuid():N}.db");
         HarborDbContext ctx = new(new HarborDbOptions(path, key));
 
@@ -39,7 +39,7 @@ public sealed class HarborDbContextTests
     public async Task DatabaseIsAccessibleAcrossCloseAndReopen()
     {
         string path = Path.Combine(Path.GetTempPath(), $"harbor-reopen-{Guid.NewGuid():N}.db");
-        byte[] key = HarborDbContext.DeriveTestKey("reopen-test");
+        byte[] key = TestKey.Derive("reopen-test");
         HarborDbOptions options = new(path, key);
 
         try

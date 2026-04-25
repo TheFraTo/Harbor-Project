@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Harbor.Data\Harbor.Data.csproj" />
+    <ProjectReference Include="..\Harbor.Data.TestSupport\Harbor.Data.TestSupport.csproj" />
   </ItemGroup>
 
 </Project>

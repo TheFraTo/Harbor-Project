@@ -1,5 +1,5 @@
 using Harbor.Data.Migrations;
-using Harbor.Data.Tests.Fixtures;
+using Harbor.Data.TestSupport;
 
 namespace Harbor.Data.Tests;
 
@@ -40,7 +40,7 @@ public sealed class MigrationRunnerTests
     [Fact]
     public async Task MigrateAsyncThrowsWhenContextNotOpen()
     {
-        byte[] key = HarborDbContext.DeriveTestKey("x");
+        byte[] key = TestKey.Derive("x");
         string tempPath = Path.Combine(Path.GetTempPath(), $"harbor-fail-{Guid.NewGuid():N}.db");
         HarborDbContext ctx = new(new HarborDbOptions(tempPath, key));
         MigrationRunner runner = new(ctx);

@@ -2,7 +2,7 @@ using Harbor.Core.Common;
 using Harbor.Core.Enums;
 using Harbor.Core.Models;
 using Harbor.Data.Repositories;
-using Harbor.Data.Tests.Fixtures;
+using Harbor.Data.TestSupport;
 
 namespace Harbor.Data.Tests.Repositories;
 
