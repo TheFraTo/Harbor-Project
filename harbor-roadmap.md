@@ -300,6 +300,14 @@ Vérification systématique des 89 tests, des fichiers `*.cs`, du schéma SQL et
 
 *Total tests après fix : 90 (Core 31, Data 34, Security 22, scaffolds 3).*
 
+**2026-04-25 — CI Linux échouait depuis le commit `c313b66` — fix**
+- 4 commits successifs (`c313b66`, `13afee9`, `5f2e70c`, `8c6f7f1`) montraient `2/3` ou `1/3` checks verts sur GitHub. Diagnostic via l'API GitHub Actions : seul `ubuntu-latest` échouait, sur l'étape `Verify formatting` (`dotnet format --verify-no-changes`).
+- **Cause racine 1 :** un bloc `try { File.Delete(f); } catch (IOException) { }` mono-ligne dans `HarborDbContextTests.cs` violait la règle WHITESPACE de `dotnet format` sur Linux (sur Windows, l'erreur n'apparaissait pas en local — j'avais lancé format par projet et non `format Harbor.sln`).
+- **Cause racine 2 :** champs `private static readonly KeyDerivationParameters FastForTests` capturés par la règle `private_fields → _camelCase` au lieu d'être traités comme des constantes. `IDE1006` levée.
+- *Fix 1 :* try-catch éclaté en multi-lignes proprement dans `HarborDbContextTests.cs`.
+- *Fix 2 :* `.editorconfig` enrichi : nouvelle règle `private_static_readonly_fields_rule` placée après `private_instance_fields_rule` pour appliquer PascalCase aux `static readonly` privés (convention Microsoft : un `static readonly` = constante de fait).
+- *Habitude à prendre :* lancer `dotnet format --verify-no-changes Harbor.sln` (sur la solution complète) avant chaque push, pas projet par projet.
+
 **2026-04-25 — Documentation bilingue EN/FR**
 - README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY passent en anglais comme source canonique (convention open source GitHub).
 - Versions françaises créées en `*.fr.md`, liens croisés EN↔FR en haut de chaque fichier.

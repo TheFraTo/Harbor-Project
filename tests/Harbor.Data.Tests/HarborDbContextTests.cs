@@ -67,7 +67,14 @@ public sealed class HarborDbContextTests
                 string f = path + suffix;
                 if (File.Exists(f))
                 {
-                    try { File.Delete(f); } catch (IOException) { }
+                    try
+                    {
+                        File.Delete(f);
+                    }
+                    catch (IOException)
+                    {
+                        // Best-effort : SQLite peut encore détenir un handle sur certaines plateformes.
+                    }
                 }
             }
         }

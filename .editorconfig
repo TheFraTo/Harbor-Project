@@ -124,8 +124,12 @@ dotnet_naming_symbols.types.applicable_accessibilities = *
 dotnet_naming_symbols.public_members.applicable_kinds = property, method, field, event
 dotnet_naming_symbols.public_members.applicable_accessibilities = public, internal, protected, protected_internal
 
-dotnet_naming_symbols.private_fields.applicable_kinds = field
-dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_instance_fields.applicable_kinds = field
+dotnet_naming_symbols.private_instance_fields.applicable_accessibilities = private
+
+dotnet_naming_symbols.private_static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_readonly_fields.required_modifiers = static, readonly
+dotnet_naming_symbols.private_static_readonly_fields.applicable_accessibilities = private
 
 dotnet_naming_symbols.constants.applicable_kinds = field
 dotnet_naming_symbols.constants.required_modifiers = const
@@ -154,9 +158,15 @@ dotnet_naming_rule.public_members_rule.severity = warning
 dotnet_naming_rule.public_members_rule.symbols = public_members
 dotnet_naming_rule.public_members_rule.style = pascal_case
 
-dotnet_naming_rule.private_fields_rule.severity = warning
-dotnet_naming_rule.private_fields_rule.symbols = private_fields
-dotnet_naming_rule.private_fields_rule.style = underscore_camel_case
+dotnet_naming_rule.private_instance_fields_rule.severity = warning
+dotnet_naming_rule.private_instance_fields_rule.symbols = private_instance_fields
+dotnet_naming_rule.private_instance_fields_rule.style = underscore_camel_case
+
+# Règle plus spécifique placée après pour qu'elle l'emporte sur la précédente :
+# private static readonly = constante de fait → PascalCase (convention Microsoft).
+dotnet_naming_rule.private_static_readonly_fields_rule.severity = warning
+dotnet_naming_rule.private_static_readonly_fields_rule.symbols = private_static_readonly_fields
+dotnet_naming_rule.private_static_readonly_fields_rule.style = pascal_case
 
 dotnet_naming_rule.locals_and_parameters_rule.severity = warning
 dotnet_naming_rule.locals_and_parameters_rule.symbols = locals_and_parameters
